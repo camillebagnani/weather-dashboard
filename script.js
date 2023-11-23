@@ -1,7 +1,6 @@
 var APIKey = 'aae95d5ae884ba06ac8463780698a447';
 var searchInput = $('.search-input')
 var searchBtn = $('.search-btn')
-var mainWeatherContainer = $('.main-weather')
 
 // fetch(queryURL);
 
@@ -20,17 +19,12 @@ function getApi() {
             console.log(`Searching for ${searchTerm}...`)
             // Create and list search history
             // TODO: Save to local storage
-            var createUl = $('.search-history').append("<ul><ul>").addClass("ul")
-            var createLi = $('.search-history').append('<li>' + city + '</li>').addClass("li")
+            $('.search-history').append("<ul><ul>").addClass("ul")
+            $('.search-history').append('<li>' + city + '</li>').addClass("li")
 
-                var cityName = $('.main-weather').append('<h3></h3>').addClass('cityName');
-                var weatherData = $('.main-weather').append('<p></p>').addClass('weatherData');
-
-                cityName.text = (data.name);
-                weatherData.text = data.weather[0].icon;
-                mainWeatherContainer.append(cityName);
-                mainWeatherContainer.append(weatherData);
-    
+            $('.main-weather').append(`<h3>${data.name}</h3>`).addClass('cityName');
+            $('.main-weather').append(`<p>${data.weather[0].description}</p>`).addClass('weatherData');
+            $('.main-weather').append(`<p>${data.dt}</p>`).addClass('date');
         });
 }
 
