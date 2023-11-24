@@ -24,24 +24,32 @@ function getApi() {
             var windMPH = (wind * 2.2369).toFixed(2) // Convert meters/sec to miles/hour
             var humidity = data.main.humidity
             var iconCode = data.weather[0].icon;
-            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-            console.log(`Searching for ${searchTerm}...`)
+            var iconURL = "https://openweathermap.org/img/wn/" + iconCode + ".png";
+
             // Create and list search history
             // TODO: Save to local storage
             $('.search-history').append("<ul><ul>").addClass("ul")
             $('.search-history').append('<li>' + city + '</li>').addClass("li")
 
-            $('.main-weather').append(`<h3>${data.name + ' ' + '(' + date + ')'}</h3>`).addClass('cityName');
+            // TODO: move to the right and put a border around it
+            $('.main-weather').append(`<h3>${data.name + ' ' + '(' + date + ')'}<img src="${iconURL}"></h3>`).addClass('main-weather-header');
             $('.main-weather').append(`<p> Temp: ${tempFahrenheit}°F</p>`).addClass('weatherData');
             $('.main-weather').append(`<p> Wind: ${windMPH} MPH</p>`).addClass('weatherData');
             $('.main-weather').append(`<p> Humidity: ${humidity}%</p>`).addClass('weatherData');
-            
         });
+
+    // var longitude = data.coord.lon - these dont equal anything outside of the fetch
+    // var latitude = data.coord.lat
+    var dailyURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?'
+    $('.five-day-forecast').append(`<h4>5-Day Forecast:</h4>`);
+
+
 }
 
 
 // Takes input value of the search bar when user clicks the search button
 // Fetches data connected to the weather API
+// TODO: Clear the search input once you click button
 searchBtn.click(function (event) {
     // event.preventDefault();
     getApi();
