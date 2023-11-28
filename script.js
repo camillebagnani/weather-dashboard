@@ -7,15 +7,15 @@ var searchBtn = $('.search-btn')
 function getApi() {
     var city = searchInput.val();
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-    
+
     fetch(queryURL)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
             console.log(data);
+            var weatherData = data;
 
-            var searchTerm = searchInput.val();
             var dateUnix = data.dt; // change from unix
             var date = new Date(dateUnix * 1000).toLocaleDateString()
             var tempKelvin = data.main.temp; // The API default temperature unit is Kelvin
@@ -36,12 +36,27 @@ function getApi() {
             $('.main-weather').append(`<p> Temp: ${tempFahrenheit}°F</p>`).addClass('weatherData');
             $('.main-weather').append(`<p> Wind: ${windMPH} MPH</p>`).addClass('weatherData');
             $('.main-weather').append(`<p> Humidity: ${humidity}%</p>`).addClass('weatherData');
+
+            var longitude = data.coord.lon
+            var latitude = data.coord.lat
+            console.log(longitude)
+            var dailyURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey;
+
+            fetch(dailyURL)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log(data);
+
+                    $('.five-day-forecast').append(`<h4>5-Day Forecast:</h4>`)
+
+                })
         });
 
-    // var longitude = data.coord.lon - these dont equal anything outside of the fetch
-    // var latitude = data.coord.lat
-    var dailyURL = 'http://api.openweathermap.org/data/2.5/forecast/daily?'
-    $('.five-day-forecast').append(`<h4>5-Day Forecast:</h4>`);
+
+
+
 
 
 }
