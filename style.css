@@ -14,8 +14,21 @@ h1 {
     padding: 2px 10px;
 }
 
-.main-weather {
+/* .main-weather {
     border: solid 2px;
     padding: 5px;
     margin: 5px;
+} */
+
+/* .fiveDayWeather {
+    background-color: aqua;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
+
+.fiveDayHeader {
+    display: block;
+} */
