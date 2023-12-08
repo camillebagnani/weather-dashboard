@@ -18,8 +18,11 @@ h1 {
     border: solid 2px;
     padding: 5px;
     margin: 5px;
-} */
+}
 
+.hidden {
+    display: none;
+} */
 /* .fiveDayWeather {
     background-color: aqua;
     padding: 30px;
