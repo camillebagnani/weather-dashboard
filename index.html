@@ -14,20 +14,23 @@
     <header>
         <h1>Weather Dashboard</h1>
     </header>
-    <div id="top-row">
-        <div>
-            <h3>Search for a city:</h3>
-            <div class="input-group input-group-sm mb-3 w-25 p-1">
-                <input type="text" class="form-control search-input" aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-sm">
+    <div id="container">
+        <div id="left-column">
+            <div class="search">
+                <h3>Search for a city:</h3>
+                <div class="input-group input-group-sm mb-3 w-100 p-1">
+                    <input type="text" class="form-control search-input" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-sm">
+                </div>
+                <button type="button" class="btn btn-primary w-100 search-btn">Search</button>
             </div>
-            <button type="button" class="btn btn-primary w-25 search-btn">Search</button>
+            <div class="search-history"></div>
+
         </div>
-        <div class="main-weather"></div>
-    </div>
-    <div class="search-history"></div>
-    <div class="five-day-forecast">
-        <div class="day-1"></div>
+        <div id="right-column">
+            <div class="main-weather w-75"></div>
+            <div class="five-day-forecast-container"></div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

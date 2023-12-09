@@ -14,24 +14,48 @@ h1 {
     padding: 2px 10px;
 }
 
+.search-history {
+    display: flex;
+    flex-direction: column;
+    width: 10vw;
+}
+
+#container{
+    display: flex;
+    
+}
+
 /* .main-weather {
+    margin-left: 200px;
+} */
+
+.main-weather-show {
     border: solid 2px;
     padding: 5px;
     margin: 5px;
+    margin-left: 50px;
 }
 
+/* 
 .hidden {
     display: none;
 } */
-/* .fiveDayWeather {
+
+.five-day-forecast-container {
+    display: flex;
+
+}
+
+.fiveDayWeather {
     background-color: aqua;
     padding: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+/*
 .fiveDayHeader {
     display: block;
 } */

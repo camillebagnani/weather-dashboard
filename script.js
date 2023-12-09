@@ -1,6 +1,8 @@
 var APIKey = 'aae95d5ae884ba06ac8463780698a447';
 var searchInput = $('.search-input')
 var searchBtn = $('.search-btn')
+var searchHistory = $('.search-history')
+var savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
 
 // fetch(queryURL);
 
@@ -26,75 +28,74 @@ function getApi(city) {
             var humidity = data.main.humidity;
             var icon = "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png";
 
-            // TODO: move to the right and put a border around it
-            $('.main-weather').append(`<h3>${data.name + ' ' + '(' + date + ')'}<img src="${icon}"></h3>
+            // TODO: Move to the right and put a border around it
+            // TODO: Have past cities appear as clickable buttons under search
+            $('.main-weather').html('')
+            $('.main-weather').append(`<h3 style="font-weight:bold">${data.name + ' ' + '(' + date + ')'}<img src="${icon}"></h3>
             <p> Temp: ${tempFahrenheit}°F</p>
             <p> Wind: ${windMPH} MPH</p>
-            <p> Humidity: ${humidity}%</p>`).addClass('main-weather');
-            // $('.main-weather').append(`<p> Temp: ${tempFahrenheit}°F</p>`).addClass('weatherData');
-            // $('.main-weather').append(`<p> Wind: ${windMPH} MPH</p>`).addClass('weatherData');
-            // $('.main-weather').append(`<p> Humidity: ${humidity}%</p>`).addClass('weatherData');
+            <p> Humidity: ${humidity}%</p>`).addClass('main-weather-show');
 
-            //Calls 5-day forecast API
-            var longitude = data.coord.lon
-            var latitude = data.coord.lat
-
-            var fiveDayURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey + '&units=imperial';
-
-            fetch(fiveDayURL)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    console.log(data);
-
-                    $('.five-day-forecast').append(`<h4>5-Day Forecast:</h4>`).addClass('fiveDayHeader')
-
-                    for (var i = 7; i < data.list.length; i += 8) {
-                
-                        var fiveDayDate = new Date(data.list[i].dt * 1000).toLocaleDateString()
-                        console.log(data)
-
-                        
-                        $('.five-day-forecast').append(`<h3>(${fiveDayDate})</h3>`).addClass('fiveDayWeather');
-                        $('.five-day-forecast').append(`<img src="${icon}">`).addClass('fiveDayWeather');
-                        $('.five-day-forecast').append(`<p> Temp: ${data.list[i].main.temp}°F</p>`).addClass('fiveDayWeather');
-                        $('.five-day-forecast').append(`<p> Wind: ${data.list[i].wind.speed} MPH</p>`).addClass('fiveDayWeather');
-                        $('.five-day-forecast').append(`<p> Humidity: ${data.list[i].main.humidity}%</p>`).addClass('fiveDayWeather');
-                    }
-
-
-                })
+            fiveDayForecast(data)
         });
-
 }
 
+//Calls 5-day forecast API
+function fiveDayForecast(data) {
+    var longitude = data.coord.lon
+    var latitude = data.coord.lat
 
-function pageLoad(){ 
+    var fiveDayURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey + '&units=imperial';
 
+    fetch(fiveDayURL)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (fiveDayData) {
+            console.log(fiveDayData);
+            $('.five-day-forecast-container').html('')
+            $('.five-day-forecast-container').append(`<h4>5-Day Forecast:</h4>`).addClass('fiveDayHeader')
+
+            for (var i = 7; i < fiveDayData.list.length; i += 8) {
+                var icon = "https://openweathermap.org/img/wn/" + fiveDayData.list[i].weather[0].icon + ".png"
+                var fiveDayDate = new Date(fiveDayData.list[i].dt * 1000).toLocaleDateString()
+                console.log(fiveDayData)
+
+                $('.five-day-forecast-container').append(`<h3 style="font-weight:bold">(${fiveDayDate})</h3>
+                <img src="${icon}">
+                <p> Temp: ${fiveDayData.list[i].main.temp}°F</p>
+                <p> Wind: ${fiveDayData.list[i].wind.speed} MPH</p>
+                <p> Humidity: ${fiveDayData.list[i].main.humidity}%</p>`).addClass('fiveDayWeather')
+            }
+        })
 }
+
+//TODO: refactor for loop to create html button before it's on page
+// on click should trigger getAPI, click button and button is the city name is passed through
 
 function renderPastCities() {
-
+    searchHistory.html('')
+    for (var i = 0; i < savedCities.length; i++) {
+        var buttonEL = $(`<button class="w-100" data-city="${savedCities[i]}">`)
+        buttonEL.on('click', function(event){
+            getApi(event.target.dataset.city)
+        })
+        buttonEL.text(savedCities[i])
+        searchHistory.append(buttonEL)
+    }
 }
 
 function saveToStorage(city) {
     // Give us the string of savedCities and parse it as an array, or give us an empty array if there is nothing saved
-    var savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
+
     savedCities.push(city);
     localStorage.setItem("savedCities", JSON.stringify(savedCities));
+    renderPastCities()
 }
-
-// Create and list search history
-            //TODO: Make these clickable buttons to retrieve the weather for the corresponding city
-            // $('.search-history').append("<ul><ul>").addClass("ul")
-            // $('.search-history').append('<li>' + city + '</li>').addClass("li")
 
 // Takes input value of the search bar when user clicks the search button
 // Fetches data connected to the weather API
-// TODO: Clear the search input once you click button
-searchBtn.click(function (event) {
-    // event.preventDefault();
+searchBtn.click(function () {
     var city = searchInput.val();
     getApi(city);
     searchInput.val('')
@@ -107,6 +108,12 @@ searchInput.keypress(function (event) {
     }
 })
 
+renderPastCities()
+
+// Create and list search history
+//TODO: Make these clickable buttons to retrieve the weather for the corresponding city
+// $('.search-history').append("<ul><ul>").addClass("ul")
+// $('.search-history').append('<li>' + city + '</li>').addClass("li")
 
 // function add(a,b){
 //     return a+b
