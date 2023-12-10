@@ -2,6 +2,7 @@ h1 {
     color: white;
     background-color:#000080;
     padding: 20px;
+    width: auto;
 }
 
 .search-history {
@@ -58,4 +59,14 @@ h1 {
 
 .five-day-image{
     width: 5vw;
+}
+
+@media screen and (max-width:980px) {
+}
+
+@media screen and (max-width:768px) {
+}
+
+@media screen and (max-width:400px) {
+
 }
