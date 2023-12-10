@@ -2,12 +2,10 @@ var APIKey = 'aae95d5ae884ba06ac8463780698a447';
 var searchInput = $('.search-input')
 var searchBtn = $('.search-btn')
 var searchHistory = $('.search-history')
+// Gives us the string of savedCities and parses it as an array, or gives us an empty array if there is nothing saved
 var savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
 
-// fetch(queryURL);
-
 function getApi(city) {
-    // var city = searchInput.val();
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + '&units=imperial';
 
     fetch(queryURL)
@@ -21,15 +19,15 @@ function getApi(city) {
 
             saveToStorage(dataName);
 
-            var dateUnix = data.dt; // change from unix
+            // Variables to store data from the API call
+            var dateUnix = data.dt; // Convert from Unix
             var date = new Date(dateUnix * 1000).toLocaleDateString()
             var tempFahrenheit = data.main.temp;
             var windMPH = data.wind.speed;
             var humidity = data.main.humidity;
             var icon = "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png";
 
-            // TODO: Move to the right and put a border around it
-            // TODO: Have past cities appear as clickable buttons under search
+            // Clears display of city's weather before appending the new weather data
             $('.main-weather').html('')
             $('.main-weather').append(`<h3 style="font-weight:bold">${data.name + ' ' + '(' + date + ')'}<img src="${icon}"></h3>
             <p> Temp: ${tempFahrenheit}°F</p>
@@ -57,11 +55,13 @@ function fiveDayForecast(data) {
             $('.five-day-header').html('')
             $('.five-day-header').append(`<h4>5-Day Forecast:</h4>`)
 
+            // Loops through the 5-day API at every 8th index, which is the following day
             for (var i = 7; i < fiveDayData.list.length; i += 8) {
                 var icon = "https://openweathermap.org/img/wn/" + fiveDayData.list[i].weather[0].icon + ".png"
                 var fiveDayDate = new Date(fiveDayData.list[i].dt * 1000).toLocaleDateString()
                 console.log(fiveDayData)
 
+                // Appends a div of the weather forecase for each index (day) that is looped through 
                 $('.five-day-forecast-container').append(`<div class="fiveDayWeather">
                 <h3 style="font-weight:bold">(${fiveDayDate})</h3>
                 <img class="five-day-image" src="${icon}">
@@ -72,27 +72,30 @@ function fiveDayForecast(data) {
         })
 }
 
-//TODO: refactor for loop to create html button before it's on page
-// on click should trigger getAPI, click button and button is the city name is passed through
-
+// Checks local storage and appends a button for each value in local storage
 function renderPastCities() {
     searchHistory.html('')
     for (var i = 0; i < savedCities.length; i++) {
+        // Create a button element with data attribute of whichever city is tied to that button
         var buttonEL = $(`<button class="btn btn-secondary history-button" data-city="${savedCities[i]}">`)
-        buttonEL.on('click', function(event){
+        buttonEL.on('click', function (event) {
+            // Targets the data (city) of whichever button is clicked
             getApi(event.target.dataset.city)
         })
+        // Text of the button is whichever city is at the index of the array in the for loop
         buttonEL.text(savedCities[i])
+        // Append a button element for each city saved to local storage
         searchHistory.append(buttonEL)
     }
 }
 
+// Pushes new cities to the savedCities array in local storage
 function saveToStorage(city) {
-    // Give us the string of savedCities and parse it as an array, or give us an empty array if there is nothing saved
-
-    savedCities.push(city);
-    localStorage.setItem("savedCities", JSON.stringify(savedCities));
-    renderPastCities()
+    if (!savedCities.includes(city)) {
+        savedCities.push(city);
+        localStorage.setItem("savedCities", JSON.stringify(savedCities));
+        renderPastCities()
+    }
 }
 
 // Takes input value of the search bar when user clicks the search button
@@ -110,16 +113,5 @@ searchInput.keypress(function (event) {
     }
 })
 
+// Happens on page load
 renderPastCities()
-
-// Create and list search history
-//TODO: Make these clickable buttons to retrieve the weather for the corresponding city
-// $('.search-history').append("<ul><ul>").addClass("ul")
-// $('.search-history').append('<li>' + city + '</li>').addClass("li")
-
-// function add(a,b){
-//     return a+b
-// }
-
-// var someNum = 55
-// add(someNum,22)
