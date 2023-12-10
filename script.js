@@ -54,18 +54,20 @@ function fiveDayForecast(data) {
         .then(function (fiveDayData) {
             console.log(fiveDayData);
             $('.five-day-forecast-container').html('')
-            $('.five-day-forecast-container').append(`<h4>5-Day Forecast:</h4>`).addClass('fiveDayHeader')
+            $('.five-day-header').html('')
+            $('.five-day-header').append(`<h4>5-Day Forecast:</h4>`)
 
             for (var i = 7; i < fiveDayData.list.length; i += 8) {
                 var icon = "https://openweathermap.org/img/wn/" + fiveDayData.list[i].weather[0].icon + ".png"
                 var fiveDayDate = new Date(fiveDayData.list[i].dt * 1000).toLocaleDateString()
                 console.log(fiveDayData)
 
-                $('.five-day-forecast-container').append(`<h3 style="font-weight:bold">(${fiveDayDate})</h3>
-                <img src="${icon}">
+                $('.five-day-forecast-container').append(`<div class="fiveDayWeather">
+                <h3 style="font-weight:bold">(${fiveDayDate})</h3>
+                <img class="five-day-image" src="${icon}">
                 <p> Temp: ${fiveDayData.list[i].main.temp}°F</p>
                 <p> Wind: ${fiveDayData.list[i].wind.speed} MPH</p>
-                <p> Humidity: ${fiveDayData.list[i].main.humidity}%</p>`).addClass('fiveDayWeather')
+                <p> Humidity: ${fiveDayData.list[i].main.humidity}%</p><div>`)
             }
         })
 }
@@ -76,7 +78,7 @@ function fiveDayForecast(data) {
 function renderPastCities() {
     searchHistory.html('')
     for (var i = 0; i < savedCities.length; i++) {
-        var buttonEL = $(`<button class="w-100" data-city="${savedCities[i]}">`)
+        var buttonEL = $(`<button class="btn btn-secondary history-button" data-city="${savedCities[i]}">`)
         buttonEL.on('click', function(event){
             getApi(event.target.dataset.city)
         })

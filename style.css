@@ -1,6 +1,6 @@
 h1 {
     color: white;
-    background-color: blue;
+    background-color:#000080;
     padding: 20px;
 }
 
@@ -25,15 +25,11 @@ h1 {
     
 }
 
-/* .main-weather {
-    margin-left: 200px;
-} */
-
 .main-weather-show {
     border: solid 2px;
     padding: 5px;
-    margin: 5px;
-    margin-left: 50px;
+    margin-left: 15px;
+    margin-bottom: 5px;
 }
 
 /* 
@@ -46,16 +42,36 @@ h1 {
 
 }
 
+.five-day-header{
+    margin-left: 15px;
+}
+
 .fiveDayWeather {
-    background-color: aqua;
-    padding: 30px;
+    background-color: #000080;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: left;
+    padding: 5px;
+    margin: 0 15px;
 }
 
-/*
-.fiveDayHeader {
-    display: block;
-} */
+#right-column {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.history-button {
+    margin: 4px;
+    color: black;
+}
+
+.search{
+    margin-bottom: 20px;
+}
+
+.five-day-image{
+    width: 5vw;
+}
