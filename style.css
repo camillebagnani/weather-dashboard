@@ -62,11 +62,20 @@ h1 {
 }
 
 @media screen and (max-width:980px) {
-}
+    .five-day-forecast-container {
+        flex-direction: column;
+    }
 
-@media screen and (max-width:768px) {
+    .fiveDayWeather {
+        margin: 15px;
+    }
 }
 
 @media screen and (max-width:400px) {
-
+    #right-column {
+        margin: 0px;
+    }
+    .main-weather-show {
+        margin: 5px;
+    }
 }
