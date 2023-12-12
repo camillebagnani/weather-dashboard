@@ -43,7 +43,7 @@ function fiveDayForecast(data) {
     var longitude = data.coord.lon
     var latitude = data.coord.lat
 
-    var fiveDayURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey + '&units=imperial';
+    var fiveDayURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey + '&units=imperial';
 
     fetch(fiveDayURL)
         .then(function (response) {
