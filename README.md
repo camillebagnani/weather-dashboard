@@ -6,7 +6,7 @@ This weather dashboard was created to learn how to use third party APIs in JavaS
 
 ## Installation
 
-To deploy the weather dashboard, visit the project repository on GitHub > Settings > Pages > Source > Branch (main) > Save. From here you can view the finished project on GitHub Pages. You can view it via GitHub Pages here:
+To deploy the weather dashboard, visit the project repository on GitHub > Settings > Pages > Source > Branch (main) > Save. From here you can view the finished project on GitHub Pages. You can view it via GitHub Pages here: https://camillebagnani.github.io/weather-dashboard/
 
 ## Usage
 
